@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/table'
 import { useAuth } from '@/context/auth-context'
 import { getAdminStats } from '@/services/api'
+import { API_BASE_URL as BASE_URL, buildFileUrl } from '@/lib/config'
 
 type RecentUpload = {
   _id: string
@@ -31,7 +32,6 @@ type AdminStats = {
   recentUploads: RecentUpload[]
 }
 
-const BASE_URL = 'http://localhost:5000'
 
 export default function AdminDashboardPage() {
   const { session } = useAuth()

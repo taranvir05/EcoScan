@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { PageHeader } from '@/components/PageHeader'
 import { toast } from 'sonner'
 import api from '@/services/api'
+import { buildFileUrl } from '@/lib/config'
 import {
   BarChart,
   Bar,
@@ -467,7 +468,7 @@ export default function AdminPage() {
                         <td className="px-8 py-5">
                           <div className="h-12 w-16 rounded-lg bg-slate-800 border border-white/5 overflow-hidden">
                             <img 
-                              src={`http://localhost:5000/${scan.image}`} 
+                              src={buildFileUrl(scan.image)} 
                               className="h-full w-full object-cover opacity-50 hover:opacity-100 transition-opacity" 
                             />
                           </div>

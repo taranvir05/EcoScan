@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { PageHeader } from '@/components/PageHeader'
 import { Upload, Image as ImageIcon, X, Scan, Loader2, CheckCircle2, FileImage, Sparkles } from 'lucide-react'
+import { API_BASE_URL } from '@/lib/config'
 
 type UploadState = 'idle' | 'preview' | 'processing' | 'complete'
 
@@ -57,7 +58,7 @@ export default function UploadPage() {
     formData.append("image", selectedFile);
 
     try {
-      const res = await fetch("http://localhost:5000/api/results/upload", {
+      const res = await fetch(`${API_BASE_URL}/api/results/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

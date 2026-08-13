@@ -1,6 +1,7 @@
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
 import axios from 'axios'
+import { API_BASE_URL } from '@/lib/config'
 
 export const waitForImages = async (element: HTMLElement) => {
   const imgs = Array.from(element.querySelectorAll('img'))
@@ -29,7 +30,7 @@ export const generatePDFReport = async (
     }
 
     console.log("Generating report for:", resultId)
-    const endpointUrl = `http://localhost:5000/api/results/${resultId}/report`
+    const endpointUrl = `${API_BASE_URL}/api/results/${resultId}/report`
     console.log("Endpoint URL:", endpointUrl)
 
     const response = await axios.get(endpointUrl, {

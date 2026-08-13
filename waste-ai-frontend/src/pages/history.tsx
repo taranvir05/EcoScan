@@ -32,6 +32,7 @@ import {
   Filter,
   FolderOpen,
 } from 'lucide-react'
+import { API_BASE_URL as BASE_URL, buildFileUrl as buildImageUrl } from '@/lib/config'
 
 type HistoryResult = {
   _id: string
@@ -41,13 +42,6 @@ type HistoryResult = {
   createdAt: string
 }
 
-const BASE_URL = 'http://localhost:5000'
-
-const buildImageUrl = (imagePath?: string) => {
-  if (!imagePath) return ''
-  const normalizedPath = imagePath.replace(/\\/g, '/').replace(/^\/+/, '')
-  return `${BASE_URL}/${normalizedPath}`
-}
 
 const getCategoryColor = (category: string) => {
   const colors: Record<string, string> = {

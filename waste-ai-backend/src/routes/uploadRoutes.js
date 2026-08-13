@@ -9,6 +9,8 @@ const Result = require("../models/Result");
 
 const router = express.Router();
 
+const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://127.0.0.1:8000";
+
 const normalizeDetections = (payload) => {
   const rawDetections = Array.isArray(payload?.detections) && payload.detections.length > 0
     ? payload.detections
@@ -89,7 +91,7 @@ router.post("/", protect, upload.single("image"), async (req, res) => {
     formData.append("image", fs.createReadStream(req.file.path));
 
     const aiResponse = await axios.post(
-      "http://127.0.0.1:8000/detect",
+      `${AI_SERVICE_URL}/detect`,
       formData,
       {
         headers: formData.getHeaders(),

@@ -23,7 +23,7 @@ import { ProfileSecurity } from '@/components/profile/ProfileSecurity'
 import { ProfileAchievements } from '@/components/profile/ProfileAchievements'
 import { ProfileActivity } from '@/components/profile/ProfileActivity'
 
-const BASE_URL = 'http://localhost:5000'
+import { API_BASE_URL as BASE_URL } from '@/lib/config'
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null)

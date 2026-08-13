@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { BarChart, TrendingUp, Leaf, Recycle, Globe2, Sparkles, Droplets, RotateCcw } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
+import { buildFileUrl } from '@/lib/config'
 
 interface ProfileStatsProps {
   stats: any
@@ -110,7 +111,7 @@ export function ProfileStats({ stats, onRefresh }: ProfileStatsProps) {
             <div className="space-y-6">
               <div className="relative aspect-[16/9] rounded-2xl overflow-hidden group shadow-2xl">
                 <img 
-                  src={`http://localhost:5000/${stats.latestScan.image.replace(/\\/g, '/')}`} 
+                  src={buildFileUrl(stats.latestScan.image)} 
                   alt="Latest scan" 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />

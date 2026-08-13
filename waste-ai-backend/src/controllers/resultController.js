@@ -7,6 +7,8 @@ const fs = require("fs");
 const { generatePDF } = require("../utils/pdfGenerator");
 const User = require("../models/user");
 
+const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://127.0.0.1:8000";
+
 const normalizeDetections = (payload) => {
   const rawDetections = Array.isArray(payload?.detections) && payload.detections.length > 0
     ? payload.detections
@@ -58,7 +60,7 @@ const uploadResult = async (req, res) => {
 
       console.log("Sending image to AI server...");
       // Send to Python AI microservice
-      aiResponse = await axios.post("http://127.0.0.1:8000/detect", formData, {
+      aiResponse = await axios.post(`${AI_SERVICE_URL}/detect`, formData, {
         headers: {
           ...formData.getHeaders(),
         },

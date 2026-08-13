@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { generatePDFReport, shareContent } from '@/lib/pdf-export'
+import { API_BASE_URL as BASE_URL, buildFileUrl as buildImageUrl } from '@/lib/config'
 import { PageHeader } from '@/components/PageHeader'
 import {
   PieChart,
@@ -141,11 +142,6 @@ const fadeUp = {
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-const BASE_URL = 'http://localhost:5000'
-const buildImageUrl = (p?: string) => {
-  if (!p) return ''
-  return `${BASE_URL}/${p.replace(/\\/g, '/').replace(/^\/+/, '')}`
-}
 const getDetectionLabel = (d?: ApiDetection | null) => d?.label || d?.type || 'Unknown'
 const normalizeCategoryKey = (v?: string) => (v ?? '').trim().toLowerCase()
 const getCategoryTheme = (label: string) => CATEGORY_MAP[normalizeCategoryKey(label)] ?? CATEGORY_MAP.trash

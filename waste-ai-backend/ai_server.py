@@ -23,6 +23,10 @@ UPLOAD_FOLDER = "temp_uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+# ─── Server configuration ─────────────────────────────────────────────────────
+FLASK_HOST = os.environ.get("FLASK_HOST", "127.0.0.1")
+FLASK_PORT = int(os.environ.get("FLASK_PORT", "8000"))
+
 
 def load_model():
     """Load the local YOLO weights from best.pt in the backend directory."""
@@ -163,5 +167,5 @@ def detect():
 
 
 if __name__ == "__main__":
-    logger.info("Starting Flask AI server on port 8000...")
-    app.run(host="127.0.0.1", port=8000, debug=False)
+    logger.info(f"Starting Flask AI server on {FLASK_HOST}:{FLASK_PORT}...")
+    app.run(host=FLASK_HOST, port=FLASK_PORT, debug=False)

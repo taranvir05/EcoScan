@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { PageHeader } from '@/components/PageHeader'
 import { useAuth } from '@/context/auth-context'
 import { getMyResults } from '@/services/api'
+import { buildFileUrl } from '@/lib/config'
 import {
   AreaChart,
   Area,
@@ -459,7 +460,7 @@ export default function DashboardPage() {
                   <tr key={res._id} className="group hover:bg-white/5 transition-colors">
                     <td className="py-4 px-2">
                       <div className="h-12 w-16 rounded-xl bg-slate-800 border border-white/5 overflow-hidden">
-                        <img src={`http://localhost:5000/${res.image}`} alt="Scan result" className="h-full w-full object-cover group-hover:scale-110 transition-transform" />
+                        <img src={buildFileUrl(res.image)} alt="Scan result" className="h-full w-full object-cover group-hover:scale-110 transition-transform" />
                       </div>
                     </td>
                     <td className="py-4">

@@ -2,7 +2,7 @@ import os
 import sys
 import base64
 import logging
-
+import time
 import cv2
 import numpy as np
 from flask import Flask, request, jsonify
@@ -24,7 +24,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # ─── Server configuration ─────────────────────────────────────────────────────
-FLASK_HOST = os.environ.get("FLASK_HOST", "127.0.0.1")
+FLASK_HOST = os.environ.get("FLASK_HOST", "0.0.0.0")
 FLASK_PORT = int(os.environ.get("PORT", os.environ.get("FLASK_PORT", "8000")))
 
 
@@ -63,11 +63,22 @@ def _encode_image_base64(image_bgr):
 
 
 def _run_inference(image_path):
+    start = time.time()
+
+    logger.info("Starting YOLO inference...")
+
     results = model.predict(
         source=image_path,
         conf=CONFIDENCE_THRESHOLD,
+        imgsz=512,
+        device="cpu",
         verbose=False,
     )
+
+    logger.info(
+        f"YOLO inference completed in {time.time() - start:.2f} seconds."
+    )
+
     return results[0]
 
 
@@ -139,8 +150,14 @@ def detect():
                 if confidence_pct > top_confidence:
                     top_confidence = confidence_pct
                     top_label = label
+        
+        annotation_start = time.time()
 
         annotated_image = _encode_image_base64(result.plot())
+
+        logger.info(
+        f"Annotated image generated in {time.time() - annotation_start:.2f} seconds."
+        )
 
         response = {
             "type": top_label or "unknown",

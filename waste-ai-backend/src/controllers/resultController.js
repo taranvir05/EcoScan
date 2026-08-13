@@ -30,11 +30,11 @@ const normalizeDetections = (payload) => {
             : 0,
       bbox: bbox && typeof bbox === "object"
         ? {
-            x1: bbox.x1 ?? bbox.x ?? bbox.left ?? null,
-            y1: bbox.y1 ?? bbox.y ?? bbox.top ?? null,
-            x2: bbox.x2 ?? bbox.xmax ?? bbox.right ?? null,
-            y2: bbox.y2 ?? bbox.ymax ?? bbox.bottom ?? null,
-          }
+          x1: bbox.x1 ?? bbox.x ?? bbox.left ?? null,
+          y1: bbox.y1 ?? bbox.y ?? bbox.top ?? null,
+          x2: bbox.x2 ?? bbox.xmax ?? bbox.right ?? null,
+          y2: bbox.y2 ?? bbox.ymax ?? bbox.bottom ?? null,
+        }
         : undefined,
     };
   });
@@ -75,8 +75,18 @@ const uploadResult = async (req, res) => {
         console.error("AI Server returned invalid format:", detection);
       }
     } catch (aiError) {
-      console.error("AI Server Error:", aiError.response ? aiError.response.data : aiError.message);
-      // If AI server fails, we still continue to save empty detections
+      console.error("=== AI SERVER REQUEST FAILED ===");
+      console.error("AI_SERVICE_URL:", AI_SERVICE_URL);
+      console.error("Error message:", aiError?.message);
+      console.error("Error code:", aiError?.code);
+      console.error("Error name:", aiError?.name);
+      console.error("HTTP status:", aiError?.response?.status);
+      console.error("Response data:", aiError?.response?.data);
+      console.error("Request URL:", aiError?.config?.url);
+      console.error("Request method:", aiError?.config?.method);
+      console.error("================================");
+
+      // If AI server fails, continue saving empty detections
     }
 
     const annotatedImage = aiResponse?.data?.annotatedImage || aiResponse?.data?.annotated_image || "";
@@ -164,7 +174,7 @@ const generateReport = async (req, res) => {
   try {
     console.log("=== REPORT ROUTE HIT ===");
     console.log("Result ID:", req.params.id);
-    
+
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -183,13 +193,13 @@ const generateReport = async (req, res) => {
     }
 
     const user = await User.findById(req.user.id);
-    
+
     // Set headers for PDF download
     const dateStr = new Date(result.createdAt || Date.now()).toISOString().slice(0, 10).replace(/-/g, '');
-    const suffix  = String(result._id).slice(-4).toUpperCase();
-    const scanId  = `EC-${dateStr}-${suffix}`;
+    const suffix = String(result._id).slice(-4).toUpperCase();
+    const scanId = `EC-${dateStr}-${suffix}`;
     const filename = `EcoScan_Report_${scanId}.pdf`;
-    
+
     res.status(200);
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
@@ -197,14 +207,14 @@ const generateReport = async (req, res) => {
     console.log(`[PDF Report] Starting PDF generation for ${filename}`);
     await generatePDF(result, user, res);
     console.log(`[PDF Report] Successfully generated PDF for result ID: ${id}`);
-    
+
   } catch (error) {
     console.error("[PDF Report] Error generating report:", error);
     if (!res.headersSent) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         success: false,
         message: "Failed to generate report",
-        error: error.message 
+        error: error.message
       });
     } else {
       console.error("[PDF Report] Headers already sent, cannot send 500 JSON");

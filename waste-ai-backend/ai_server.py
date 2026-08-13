@@ -25,7 +25,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # ─── Server configuration ─────────────────────────────────────────────────────
 FLASK_HOST = os.environ.get("FLASK_HOST", "127.0.0.1")
-FLASK_PORT = int(os.environ.get("FLASK_PORT", "8000"))
+FLASK_PORT = int(os.environ.get("PORT", os.environ.get("FLASK_PORT", "8000")))
 
 
 def load_model():

@@ -41,6 +41,8 @@ exports.register = async (req, res) => {
 // LOGIN
 exports.login = async (req, res) => {
   try {
+    console.log("LOGIN REQUEST RECEIVED");
+    console.log("Email:", req.body.email);
     const { email, password } = req.body;
     const normalizedEmail = normalizeEmail(email);
 
@@ -69,6 +71,7 @@ exports.login = async (req, res) => {
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("LOGIN ERROR:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

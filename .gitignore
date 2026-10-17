@@ -55,3 +55,6 @@ tsconfig.tsbuildinfo
 
 # Note: .env.example files should be committed — they contain no secrets
 # Only .env (actual secrets) is ignored above
+# Local model backup and ONNX export
+waste-ai-backend/best_old.pt
+waste-ai-backend/test_onnx.py
